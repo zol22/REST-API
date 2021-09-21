@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
     // TODO Add associations. one-to-many
     User.hasMany(models.Course, {
       foreignKey:{
-        fieldName: 'UserId',
+        fieldName: 'userId',
         allowNull: false,
       },
     });
