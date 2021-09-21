@@ -33,7 +33,7 @@ exports.authenticateUser = async (req, res, next) => {
                 // req.currentUser means that you're adding a property named currentUser to the request object and setting it to the authenticated user.
               req.currentUser = user;
             } else {
-                message: `Authentication failure for username: ${user.emailAddress}`;
+                message = `Authentication failure for username: ${user.emailAddress}`;
                 }
           } else {
                 message = `User not found for username: ${credentials.emailAddress}`;
@@ -51,7 +51,6 @@ exports.authenticateUser = async (req, res, next) => {
 
   // If user authentication failed...
      // Return a response with a 401 Unauthorized HTTP status code.
-
   // Or if user authentication succeeded...
      // Call the next() method.
 }

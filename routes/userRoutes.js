@@ -4,6 +4,7 @@ const express = require('express');
 const { asyncHandler } = require('../middleware/async-handler');
 const { authenticateUser } = require('../middleware/auth-user');
 const { User } = require('../models');
+const bcrypt = require('bcryptjs');
 
 // Construct a router instance.
 const router = express.Router();
@@ -30,8 +31,31 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
 router.post('/users', asyncHandler(async (req, res) => {
     console.log(req.body);
     try {
-      await User.create(req.body);
-      res.status(201).json({ "message": "Account successfully created!" });
+      //await User.create(req.body);
+      //res.status(201).json({ "message": "Account successfully created!" });
+      const user = req.body;
+      const errors = [];
+      if (!user.firstName) {
+        errors.push('Please provide a first name');
+      }
+      if (!user.lastName) {
+        errors.push('Please provide a last name');
+      }
+      if (!user.emailAddress) {
+        errors.push('Please provide an email address');
+      }
+      if (!user.password) {
+        errors.push('Please provide a password');
+      } else {
+        user.password = bcrypt.hashSync(user.password, 10);
+      }
+      
+      if (errors.length > 0) {
+        res.status(400).json({ errors });
+      } else {
+        await User.create(user);
+        res.location('/').status(201).json({ "message": "Account successfully created!" }).end();
+      }
     } catch (error) {
       /* If any of these required values are not properly submitted, the application should respond by 
         sending a 400 HTTP status code and validation errors.*/
