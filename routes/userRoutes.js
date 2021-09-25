@@ -54,7 +54,7 @@ router.post('/users', asyncHandler(async (req, res) => {
         res.status(400).json({ errors });
       } else {
         await User.create(user);
-        res.location('/').status(201).json({ "message": "Account successfully created!" }).end();
+        res.location('/').status(201);
       }
     } catch (error) {
       /* If any of these required values are not properly submitted, the application should respond by 
